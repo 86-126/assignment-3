@@ -30,5 +30,8 @@ public class TableManager {
         }
     }
 
-
+    // Add philosopher to a table
+    public synchronized void addPhilosopher(int tableId, int philosopherId) {
+        tables[tableId].add(philosopherId);
+    }
 }
