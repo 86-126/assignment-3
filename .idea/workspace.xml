@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="713af049-910d-431e-8c04-3abecb38fb24" name="Changes" comment="addPhilosopher function implemented">
+    <list default="true" id="713af049-910d-431e-8c04-3abecb38fb24" name="Changes" comment="Philosopher class implemented">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Philosopher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Philosopher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TableManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TableManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +92,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727288489614</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Philosopher class implemented">
+      <option name="closed" value="true" />
+      <created>1727413577107</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1727413577107</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -98,6 +108,7 @@
     <MESSAGE value="isDeadlocked function implemented" />
     <MESSAGE value="moveToSixthTable function implemented" />
     <MESSAGE value="addPhilosopher function implemented" />
-    <option name="LAST_COMMIT_MESSAGE" value="addPhilosopher function implemented" />
+    <MESSAGE value="Philosopher class implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="Philosopher class implemented" />
   </component>
 </project>

@@ -3,8 +3,9 @@ import java.util.List;
 import java.util.Random;
 
 public class TableManager {
-    private final List<Integer>[] tables = new ArrayList[6];  // 5 normal tables + 6th table
+    private final List<Integer>[] tables = new ArrayList[6];
     private final Random random = new Random();
+    private char lastMover = ' ';
 
     public TableManager() {
         for (int i = 0; i < 6; i++) {
@@ -14,8 +15,7 @@ public class TableManager {
 
     // Check if a table is deadlocked
     public boolean isDeadlocked(int philosopherId) {
-        // Simulate deadlock detection logic (for simplicity, return true randomly)
-        return random.nextBoolean();  // Randomly trigger deadlock for now
+        return random.nextBoolean();
     }
 
     // Move philosopher to the 6th table if deadlocked
@@ -24,10 +24,15 @@ public class TableManager {
             if (tables[i].contains(philosopherId)) {
                 tables[i].remove(Integer.valueOf(philosopherId));
                 tables[5].add(philosopherId);  // Move to the 6th table
-                System.out.println("Philosopher " + philosopherId + " moved to sixth table.");
+                lastMover = (char) ('A' + philosopherId);
+                System.out.println("Philosopher " + lastMover + " moved to sixth table.");
                 break;
             }
         }
+    }
+
+    public void printLastMover() {
+        System.out.println("The last philosopher to move to the sixth table before deadlock: " + lastMover);
     }
 
     // Add philosopher to a table
