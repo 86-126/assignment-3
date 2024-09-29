@@ -1,42 +1,48 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class TableManager {
-    private final List<Integer>[] tables = new ArrayList[6];
-    private final Random random = new Random();
-    private char lastMover = ' ';
+    private final List<List<Integer>> tables;
+    private final List<Integer> sixthTable;
+    private Integer lastMovedPhilosopher = null;
 
     public TableManager() {
-        for (int i = 0; i < 6; i++) {
-            tables[i] = new ArrayList<>();
+        tables = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            tables.add(new ArrayList<>());  // Create 5 tables
+        }
+        sixthTable = new ArrayList<>();  // Sixth table
+    }
+
+    public synchronized void addPhilosopher(int tableNumber, int philosopherId) {
+        if (tableNumber >= 0 && tableNumber < 5) {
+            tables.get(tableNumber).add(philosopherId);
         }
     }
 
-    // Check if a table is deadlocked
-    public boolean isDeadlocked(int philosopherId) {
-        return random.nextBoolean();
-    }
-
-    // Move philosopher to the 6th table if deadlocked
-    public synchronized void moveToSixthTable(int philosopherId) {
-        for (int i = 0; i < 6; i++) {
-            if (tables[i].contains(philosopherId)) {
-                tables[i].remove(Integer.valueOf(philosopherId));
-                tables[5].add(philosopherId);  // Move to the 6th table
-                lastMover = (char) ('A' + philosopherId);
-                System.out.println("Philosopher " + lastMover + " moved to sixth table.");
-                break;
-            }
+    public synchronized boolean moveToSixthTable(int philosopherId) {
+        // Move philosopher to the sixth table if there's room
+        if (sixthTable.size() < 5) {
+            System.out.println("Philosopher " + getPhilosopherLabel(philosopherId) + " is moving to the sixth table.");
+            sixthTable.add(philosopherId);
+            System.out.println("Philosopher " + getPhilosopherLabel(philosopherId) + " moved to sixth table.");
+            lastMovedPhilosopher = philosopherId;
+            return false;
+        } else {
+            System.out.println("Sixth table is now full, potential deadlock.");
+            return true;  // Simulate deadlock once the sixth table is full
         }
     }
 
-    public void printLastMover() {
-        System.out.println("The last philosopher to move to the sixth table before deadlock: " + lastMover);
+    public synchronized void printLastMover() {
+        if (lastMovedPhilosopher != null) {
+            System.out.println("The last philosopher to move to the sixth table before deadlock: " + getPhilosopherLabel(lastMovedPhilosopher));
+        } else {
+            System.out.println("No philosopher moved to the sixth table.");
+        }
     }
 
-    // Add philosopher to a table
-    public synchronized void addPhilosopher(int tableId, int philosopherId) {
-        tables[tableId].add(philosopherId);
+    private String getPhilosopherLabel(int id) {
+        return String.valueOf((char) ('A' + id));
     }
 }

@@ -1,14 +1,14 @@
 import java.util.Random;
 
 public class Philosopher implements Runnable {
-    private final int id;
-    private final Fork leftFork;
-    private final Fork rightFork;
-    private final Random random = new Random();
-    private final TableManager tableManager;  // Manages tables and handles deadlock
+    private int id;
+    private Fork leftFork;
+    private Fork rightFork;
+    private TableManager tableManager;
+    private Random random = new Random();
 
     public Philosopher(int id, Fork leftFork, Fork rightFork, TableManager tableManager) {
-        this.id = id;  // Philosopher ID (0, 1, 2, ..., 24)
+        this.id = id;
         this.leftFork = leftFork;
         this.rightFork = rightFork;
         this.tableManager = tableManager;
@@ -19,13 +19,10 @@ public class Philosopher implements Runnable {
         try {
             while (true) {
                 think();
-                if (tableManager.isDeadlocked(id)) {  // Check if deadlock has occurred
-                    moveToSixthTable();
+                if (tableManager.moveToSixthTable(id)) {
                     return;
                 }
-                pickUpForks();
                 eat();
-                putDownForks();
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -33,33 +30,26 @@ public class Philosopher implements Runnable {
     }
 
     private void think() throws InterruptedException {
-        int thinkTime = random.nextInt(10) * 1000;  // Think for 0-10 seconds
-        System.out.println("Philosopher " + (char) ('A' + id) + " is thinking for " + thinkTime / 1000 + " seconds.");
-        Thread.sleep(thinkTime);
+        int thinkingTime = random.nextInt(10);
+        System.out.println("Philosopher " + getPhilosopherLabel(id) + " is thinking for " + thinkingTime + " seconds.");
+        Thread.sleep(thinkingTime * 1000);
     }
 
-    private void pickUpForks() throws InterruptedException {
+    private void eat() throws InterruptedException {
         synchronized (leftFork) {
-            System.out.println("Philosopher " + (char) ('A' + id) + " picked up left fork " + leftFork.getId());
-            Thread.sleep(4000);  // Wait 4 seconds to pick up the right fork
+            System.out.println("Philosopher " + getPhilosopherLabel(id) + " picked up left fork " + leftFork.getId());
+            Thread.sleep(4000);
             synchronized (rightFork) {
-                System.out.println("Philosopher " + (char) ('A' + id) + " picked up right fork " + rightFork.getId());
+                System.out.println("Philosopher " + getPhilosopherLabel(id) + " picked up right fork " + rightFork.getId());
+                int eatingTime = random.nextInt(5) + 1;
+                System.out.println("Philosopher " + getPhilosopherLabel(id) + " is eating for " + eatingTime + " seconds.");
+                Thread.sleep(eatingTime * 1000);
+                System.out.println("Philosopher " + getPhilosopherLabel(id) + " put down both forks.");
             }
         }
     }
 
-    private void eat() throws InterruptedException {
-        int eatTime = random.nextInt(5) * 1000;  // Eat for 0-5 seconds
-        System.out.println("Philosopher " + (char) ('A' + id) + " is eating for " + eatTime / 1000 + " seconds.");
-        Thread.sleep(eatTime);
-    }
-
-    private void putDownForks() {
-        System.out.println("Philosopher " + (char) ('A' + id) + " put down both forks.");
-    }
-
-    private void moveToSixthTable() {
-        System.out.println("Philosopher " + (char) ('A' + id) + " is moving to the sixth table.");
-        tableManager.moveToSixthTable(id);
+    private String getPhilosopherLabel(int id) {
+        return String.valueOf((char) ('A' + id));
     }
 }
